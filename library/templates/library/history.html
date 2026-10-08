@@ -1,0 +1,13 @@
+{% extends "library/base.html" %}
+{% block content %}
+<h1>Borrowing history: {{ member.name }}</h1>
+{% for item in history %}
+<article>
+    <h2>{{ item.book.title }}</h2>
+    <p>Borrowed: {{ item.borrowed_at }}</p>
+    <p>Returned: {% if item.returned_at %}{{ item.returned_at }}{% else %}Not returned yet{% endif %}</p>
+</article>
+{% empty %}
+<p>No borrowing history.</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "library/base.html" %}
+{% block content %}
+<h1>Books</h1>
+
+<form method="get">
+    <input name="q" value="{{ query }}" placeholder="Search books">
+    <button type="submit">Search</button>
+</form>
+
+{% for book in books %}
+<article>
+    <h2>{{ book.title }}</h2>
+    <p>{{ book.author }} — {{ book.year }}</p>
+    <p>Available: {{ book.available }} | Borrowed: {{ book.borrow_count }} times</p>
+
+    {% if book.available %}
+    {% for member in members %}
+    <form method="post" action="{% url 'borrow_book' book.id member.id %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit">Borrow for {{ member.name }}</button>
+    </form>
+    {% endfor %}
+    {% else %}
+    <form method="post" action="{% url 'return_book' book.id %}">
+        {% csrf_token %}
+        <button type="submit">Return</button>
+    </form>
+    {% endif %}
+</article>
+{% endfor %}
+{% endblock %}
